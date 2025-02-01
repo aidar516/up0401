@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактировать склад</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Редактировать склад</h1>
+    <form th:action="@{'/warehouses/update/' + ${warehouse.id}}" method="post">
+        <div class="mb-3">
+            <label for="book" class="form-label">Книга</label>
+            <select id="book" name="book.id" class="form-control" required>
+                <option th:each="book : ${books}" th:value="${book.id}" th:text="${book.name}"
+                        th:selected="${book.id == warehouse.book.id}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="line" class="form-label">Линия</label>
+            <input type="text" id="line" name="line" class="form-control" th:value="${warehouse.line}" required>
+        </div>
+        <div class="mb-3">
+            <label for="cell" class="form-label">Ячейка</label>
+            <input type="text" id="cell" name="cell" class="form-control" th:value="${warehouse.cell}" required>
+        </div>
+        <div class="mb-3">
+            <label for="quantity" class="form-label">Количество</label>
+            <input type="number" id="quantity" name="quantity" class="form-control" th:value="${warehouse.quantity}" required>
+        </div>
+        <button type="submit" class="btn btn-success">Сохранить</button>
+        <a href="/warehouses" class="btn btn-secondary">Отмена</a>
+    </form>
+</div>
+</body>
+</html>

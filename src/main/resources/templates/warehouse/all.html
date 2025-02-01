@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Склады</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Список складов</h1>
+    <a href="/warehouses/new" class="btn btn-success mb-3">Добавить склад</a>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Книга</th> <!-- Добавлено отображение книги -->
+            <th>Линия</th>
+            <th>Ячейка</th>
+            <th>Количество</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="warehouse : ${warehouses}">
+            <td th:text="${warehouse.id}"></td>
+            <td th:text="${warehouse.book != null ? warehouse.book.name : 'Нет книги'}"></td> <!-- Если книга не null, то выводится её название -->
+            <td th:text="${warehouse.line}"></td>
+            <td th:text="${warehouse.cell}"></td>
+            <td th:text="${warehouse.quantity}"></td>
+            <td>
+                <a th:href="@{'/warehouses/edit/' + ${warehouse.id}}" class="btn btn-primary btn-sm">Редактировать</a>
+                <form th:action="@{'/warehouses/delete/' + ${warehouse.id}}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Удалить склад?')">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="/" class="btn btn-secondary">Назад</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(to right, #a8eaad, #fea6c8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(62, 62, 62, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        .btn-primary {
+            background-color: #28a7a7;
+            border-color: #28a7a7;
+        }
+        .btn-primary:hover {
+            background-color: #2872a7;
+            border-color: #2872a7;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center">Регистрация</h1>
+    <div th:if="${error != null}" style="color: red;">
+        <p th:text="${error}"></p>
+    </div>
+    <form th:action="@{/register}" th:object="${registrationForm}" method="post">
+        <div>
+            <label for="username">Логин:</label>
+            <input class="form-control" type="text" id="username" th:field="*{username}" required>
+            <div th:if="${#fields.hasErrors('username')}" class="text-danger">
+                <p th:each="error : ${#fields.errors('username')}" th:text="${error}"></p>
+            </div>
+        </div>
+
+        <div>
+            <label for="password">Пароль:</label>
+            <input class="form-control" type="password" id="password" th:field="*{password}" required>
+            <div th:if="${#fields.hasErrors('password')}" class="text-danger">
+                <p th:each="error : ${#fields.errors('password')}" th:text="${error}"></p>
+            </div>
+        </div>
+
+        <div>
+            <label for="confirmPassword">Повторите пароль:</label>
+            <input class="form-control" type="password" id="confirmPassword" th:field="*{confirmPassword}" required>
+            <div th:if="${#fields.hasErrors('confirmPassword')}" class="text-danger">
+                <p th:each="error : ${#fields.errors('confirmPassword')}" th:text="${error}"></p>
+            </div>
+        </div>
+
+        <div>
+            <label for="email">Почта:</label>
+            <input class="form-control" type="email" id="email" th:field="*{email}" required>
+            <div th:if="${#fields.hasErrors('email')}" class="text-danger">
+                <p th:each="error : ${#fields.errors('email')}" th:text="${error}"></p>
+            </div>
+        </div>
+
+        <div>
+            <label for="address">Адрес:</label>
+            <input class="form-control" type="text" id="address" th:field="*{address}" required>
+            <div th:if="${#fields.hasErrors('address')}" class="text-danger">
+                <p th:each="error : ${#fields.errors('address')}" th:text="${error}"></p>
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Зарегистрироваться</button>
+    </form>
+    <p>Уже есть аккаунт? <a th:href="@{/login}">Войти</a></p>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

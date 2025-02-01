@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Детали заказов</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Список деталей заказов</h1>
+    <a href="/order-details/new" class="btn btn-success mb-3">Добавить деталь заказа</a>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Книга</th>
+            <th>Кол-во</th>
+            <th>Цена за единицу</th>
+            <th>Общий итог</th>
+            <th>Заказ</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="orderDetail : ${orderDetails}">
+            <td th:text="${orderDetail.id}"></td>
+            <td th:text="${orderDetail.book.name}"></td> <!-- Связь с Book -->
+            <td th:text="${orderDetail.quantity}"></td>
+            <td th:text="${orderDetail.book.price}"></td> <!-- Цена книги -->
+            <td th:text="${orderDetail.quantity * orderDetail.book.price}"></td> <!-- Общая стоимость -->
+            <td th:text="${orderDetail.order.id}"></td> <!-- Связь с Order -->
+            <td>
+                <a th:href="@{'/order-details/edit/' + ${orderDetail.id}}" class="btn btn-primary btn-sm">Изменить</a>
+                <form th:action="@{'/order-details/delete/' + ${orderDetail.id}}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Удалить деталь заказа?')">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="/" class="btn btn-secondary">Назад</a>
+</div>
+</body>
+</html>
