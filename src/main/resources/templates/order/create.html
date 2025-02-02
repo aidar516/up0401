@@ -15,9 +15,8 @@
                     <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.username}"></option>
                 </select>
             </div>
-            <div class="mb-3">
-                <input type="hidden" id="date" th:field="*{date}" th:value="${currentDate}" class="form-control" required>
-            </div>
+            <input type="hidden" th:field="*{date}" th:value="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}" />
+
             <div class="mb-3">
                 <label for="books" class="form-label">Книги</label>
                 <select id="books" th:field="*{books}" class="form-control" multiple required>
@@ -33,6 +32,7 @@
             <button type="submit" class="btn btn-primary">Добавить</button>
             <a href="/orders" class="btn btn-secondary">Отмена</a>
         </form>
+
     </div>
     </body>
     </html>

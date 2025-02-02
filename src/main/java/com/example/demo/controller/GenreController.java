@@ -52,7 +52,8 @@ public class GenreController {
 
     @PostMapping("/delete/{id}")
     public String deleteGenre(@PathVariable Long id) {
-        genreRepository.deleteById(id);
+        Genre genre = genreRepository.findById(id).orElse(null);
+        genreRepository.delete(genre);
         return "redirect:/genres";
     }
 }

@@ -21,7 +21,7 @@ public class Publisher {
     @NotBlank(message = "Поле не может быть пустым")
     private String website;
 
-    @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL, fetch = FetchType.LAZY,  orphanRemoval = true)
     private List<Book> books;
 
     public Long getId() {

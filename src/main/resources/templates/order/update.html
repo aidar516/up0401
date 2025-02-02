@@ -8,29 +8,32 @@
 <body>
 <div class="container mt-5">
     <h1 class="mb-4">Редактировать заказ</h1>
-    <form th:action="@{/orders}" th:object="${order}" method="post">
+    <form th:action="@{/orders/update/{id}(id=${order.id})}" th:object="${order}" method="post">
         <div class="mb-3">
             <label for="user" class="form-label">Пользователь</label>
-            <select id="user" name="user.id" class="form-control" required>
-                <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.username}" th:selected="${user.id == order.user.id}"></option>
+            <select id="user" th:field="*{user}" class="form-control" required>
+                <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.username}"></option>
             </select>
         </div>
+
+        <input type="hidden" th:field="*{date}" />
+
         <div class="mb-3">
-            <input type="hidden" id="date" name="date" class="form-control" th:fields="${currentDate}" required>
-        </div>
-        <div class="mb-3">
-            <label for="books" class="form-label">Продукты</label>
+            <label for="books" class="form-label">Книги</label>
             <select id="books" th:field="*{books}" class="form-control" multiple required>
                 <option th:each="book : ${books}" th:value="${book.id}" th:text="${book.name}"></option>
             </select>
         </div>
+
         <div class="mb-3">
             <label for="totalPrice" class="form-label">Общая сумма</label>
-            <input type="number" id="totalPrice" name="totalPrice" class="form-control" th:value="${order.totalPrice}" required>
+            <input type="number" id="totalPrice" th:field="*{totalPrice}" class="form-control" required>
         </div>
+
         <button type="submit" class="btn btn-success">Сохранить</button>
         <a href="/orders" class="btn btn-secondary">Отмена</a>
     </form>
+
 </div>
 </body>
 </html>

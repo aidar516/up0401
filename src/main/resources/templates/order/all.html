@@ -13,6 +13,7 @@
         <thead>
         <tr>
             <th>ID</th>
+            <th>Книги</th>
             <th>Общая сумма</th>
             <th>Пользователь</th>
             <th>Действия</th>
@@ -21,8 +22,15 @@
         <tbody>
         <tr th:each="order : ${orders}">
             <td th:text="${order.id}"></td>
+            <td>
+                <span th:each="book, iterStat : ${order.books}">
+                    <span th:text="${book.name}"></span>
+                    <span th:if="${!iterStat.last}">, </span>
+                </span>
+            </td>
+
             <td th:text="${order.totalPrice}"></td>
-            <td th:text="${order.user.username}"></td>
+            <td th:text="${order.user != null ? order.user.username : 'Не указан'}"></td>
             <td>
                 <a th:href="@{'/orders/edit/' + ${order.id}}" class="btn btn-primary btn-sm">Изменить</a>
                 <form th:action="@{'/orders/delete/' + ${order.id}}" method="post" class="d-inline">
@@ -30,6 +38,7 @@
                 </form>
             </td>
         </tr>
+
         </tbody>
     </table>
     <a href="/" class="btn btn-secondary">Назад</a>

@@ -16,7 +16,6 @@
             <th>Название</th>
             <th>Адрес</th>
             <th>Сайт</th>
-            <th>Книги</th>
             <th>Действия</th>
         </tr>
         </thead>
@@ -26,8 +25,6 @@
             <td th:text="${publisher.name}"></td>
             <td th:text="${publisher.address}"></td>
             <td th:text="${publisher.website}"></td>
-            <td th:text="${#lists.size(publisher.books)}"> <!-- Количество книг, связанных с издателем -->
-            </td>
             <td>
                 <a th:href="@{'/publishers/edit/' + ${publisher.id}}" class="btn btn-primary btn-sm">Редактировать</a>
                 <form th:action="@{'/publishers/delete/' + ${publisher.id}}" method="post" class="d-inline">

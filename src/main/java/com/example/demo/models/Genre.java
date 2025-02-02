@@ -20,7 +20,7 @@ public class Genre {
     @NotBlank(message = "Поле не может быть пустым")
     private String description;
 
-    @OneToMany(mappedBy = "genre", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "genre", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Book> books;
 
     public Long getId() {

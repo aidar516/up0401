@@ -4,7 +4,6 @@ import com.example.demo.models.Order;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.OrderRepository;
 import com.example.demo.repository.UserRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -35,7 +33,6 @@ public class OrderController {
 
     @GetMapping("/new")
     public String newOrder(Model model) {
-        model.addAttribute("currentDate", LocalDate.now().toString());
         model.addAttribute("order", new Order());
         model.addAttribute("users", userRepository.findAll());
         model.addAttribute("books", bookRepository.findAll());
@@ -44,8 +41,9 @@ public class OrderController {
 
     @PostMapping
     public String createOrder(@Valid @ModelAttribute("order") Order order, BindingResult result, Model model) {
-        if(result.hasErrors()) {
-            model.addAttribute("order", order);
+        if (result.hasErrors()) {
+            model.addAttribute("users", userRepository.findAll());
+            model.addAttribute("books", bookRepository.findAll());
             return "order/create";
         }
         orderRepository.save(order);
@@ -55,24 +53,30 @@ public class OrderController {
     @GetMapping("/edit/{id}")
     public String editOrderForm(@PathVariable Long id, Model model) {
         Order order = orderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Order not found"));
-        model.addAttribute("currentDate", LocalDate.now().toString());
         model.addAttribute("order", order);
         model.addAttribute("users", userRepository.findAll());
         model.addAttribute("books", bookRepository.findAll());
         return "order/update";
     }
 
-    @PostMapping("/{id}")
+    @PostMapping("/update/{id}")
     public String updateOrder(@PathVariable Long id, @ModelAttribute Order order) {
-        order.setId(id);
-        orderRepository.save(order);
+        Order existingOrder = orderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Order not found"));
+        existingOrder.setDate(order.getDate());
+        existingOrder.setUser(order.getUser());
+        existingOrder.setBooks(order.getBooks());
+        existingOrder.setTotalPrice(order.getTotalPrice());
+        orderRepository.save(existingOrder);
         return "redirect:/orders";
     }
 
     @Transactional
-    @DeleteMapping("/{id}")
+    @PostMapping("/delete/{id}")
     public String deleteOrder(@PathVariable Long id) {
-        Order order = orderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("invalid order id"));
+        orderRepository.findById(id).ifPresent(order -> {
+            order.getBooks().clear();
+            orderRepository.delete(order);
+        });
         return "redirect:/orders";
     }
 }

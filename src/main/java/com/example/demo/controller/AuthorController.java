@@ -47,7 +47,8 @@ public class AuthorController {
 
     @PostMapping("/delete/{id}")
     public String deleteAuthor(@PathVariable Long id) {
-        authorRepository.deleteById(id);
+        Author author = authorRepository.findById(id).orElseThrow();
+        authorRepository.delete(author);
         return "redirect:/authors";
     }
 }
