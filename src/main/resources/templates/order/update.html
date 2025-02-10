@@ -14,6 +14,9 @@
             <select id="user" th:field="*{user}" class="form-control" required>
                 <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.username}"></option>
             </select>
+            <div th:if="${#fields.hasErrors('user')}" class="text-danger">
+                <span th:errors="*{user}"></span>
+            </div>
         </div>
 
         <input type="hidden" th:field="*{date}" />
@@ -23,17 +26,22 @@
             <select id="books" th:field="*{books}" class="form-control" multiple required>
                 <option th:each="book : ${books}" th:value="${book.id}" th:text="${book.name}"></option>
             </select>
+            <div th:if="${#fields.hasErrors('books')}" class="text-danger">
+                <span th:errors="*{books}"></span>
+            </div>
         </div>
 
         <div class="mb-3">
             <label for="totalPrice" class="form-label">Общая сумма</label>
             <input type="number" id="totalPrice" th:field="*{totalPrice}" class="form-control" required>
+            <div th:if="${#fields.hasErrors('totalPrice')}" class="text-danger">
+                <span th:errors="*{totalPrice}"></span>
+            </div>
         </div>
 
         <button type="submit" class="btn btn-success">Сохранить</button>
         <a href="/orders" class="btn btn-secondary">Отмена</a>
     </form>
-
 </div>
 </body>
 </html>

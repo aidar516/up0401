@@ -39,11 +39,17 @@ public class PublisherController {
     }
 
     @PostMapping("/update/{id}")
-    public String updatePublisher(@PathVariable Long id, @ModelAttribute Publisher publisher) {
-        publisher.setId(id);
-        publisherRepository.save(publisher);
+    public String updatePublisher(@PathVariable Long id, @ModelAttribute Publisher updatedPublisher) {
+        Publisher existingPublisher = publisherRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Publisher not found"));
+
+        existingPublisher.setName(updatedPublisher.getName());
+
+        publisherRepository.save(existingPublisher);
+
         return "redirect:/publishers";
     }
+
 
     @PostMapping("/delete/{id}")
     public String deletePublisher(@PathVariable Long id) {

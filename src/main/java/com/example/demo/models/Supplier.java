@@ -3,6 +3,7 @@ package com.example.demo.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class Supplier {
     private String name;
 
     @NotBlank(message = "Поле не должно быть пустым")
-    @Size(min = 11, max = 11, message = "Поле должно содержать 11 символов")
+    @Pattern(regexp = "^\\d{11}$", message = "Телефон должен содержать ровно 11 цифр")
     private String phone;
 
     @NotBlank(message = "Поле не должно быть пустым")

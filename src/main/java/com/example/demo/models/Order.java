@@ -2,7 +2,7 @@ package com.example.demo.models;
 
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,6 +15,7 @@ public class Order {
 
     private LocalDateTime date;
 
+    @Min(value = 0, message = "Цена не может быть отрицательной")
     private Double totalPrice;
 
     @ManyToOne(cascade = CascadeType.PERSIST)

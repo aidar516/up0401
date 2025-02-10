@@ -8,19 +8,32 @@
 <body>
 <div class="container mt-5">
     <h1>Редактировать поставщика</h1>
-    <form th:action="@{'/suppliers/update/' + ${supplier.id}}" method="post">
+    <form th:action="@{'/suppliers/update/' + ${supplier.id}}" method="post" th:object="${supplier}">
         <div class="mb-3">
             <label for="name" class="form-label">Название</label>
             <input type="text" id="name" name="name" class="form-control" th:value="${supplier.name}" required>
+            <!-- Ошибка для поля name -->
+            <div th:if="${#fields.hasErrors('name')}" class="text-danger">
+                <span th:errors="*{name}"></span>
+            </div>
         </div>
         <div class="mb-3">
             <label for="address" class="form-label">Адрес</label>
             <input type="text" id="address" name="address" class="form-control" th:value="${supplier.address}" required>
+            <!-- Ошибка для поля address -->
+            <div th:if="${#fields.hasErrors('address')}" class="text-danger">
+                <span th:errors="*{address}"></span>
+            </div>
         </div>
         <div class="mb-3">
             <label for="phone" class="form-label">Телефон</label>
-            <input type="text" id="phone" name="phone" class="form-control" th:value="${supplier.phone}">
+            <input type="text" id="phone" name="phone" class="form-control" th:value="${supplier.phone}"
+                   pattern="^\d{11}$" title="Телефон должен содержать ровно 11 цифр" required>
+            <div th:if="${#fields.hasErrors('phone')}" class="text-danger">
+                <span th:errors="*{phone}"></span>
+            </div>
         </div>
+
         <button type="submit" class="btn btn-success">Сохранить</button>
         <a href="/suppliers" class="btn btn-secondary">Отмена</a>
     </form>

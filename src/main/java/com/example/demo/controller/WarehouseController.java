@@ -40,11 +40,13 @@ public class WarehouseController {
     public String createWarehouse(@Valid @ModelAttribute("warehouse") Warehouse warehouse, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("books", bookRepository.findAll());
+            result.getAllErrors().forEach(error -> System.out.println("Error: " + error.getDefaultMessage()));
             return "warehouse/create";
         }
         warehouseRepository.save(warehouse);
         return "redirect:/warehouses";
     }
+
 
     @GetMapping("/edit/{id}")
     public String editWarehouseForm(@PathVariable Long id, Model model) {

@@ -8,37 +8,49 @@
 <body>
 <div class="container mt-5">
     <h1>Добавление книги</h1>
-    <form action="/books/create" method="post">
+    <form action="/books/create" method="post" th:object="${book}">
         <div class="mb-3">
             <label for="name" class="form-label">Название</label>
-            <input type="text" class="form-control" id="name" name="name" required>
+            <input type="text" class="form-control" id="name" name="name" th:value="${book.name}" required>
+            <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></div>
         </div>
+
         <div class="mb-3">
             <label for="author" class="form-label">Автор</label>
             <select class="form-select" id="author" name="author.id" required>
                 <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name + ' ' + author.surname}"></option>
             </select>
+            <div th:if="${#fields.hasErrors('author')}" th:errors="*{author}" class="text-danger"></div>
         </div>
+
         <div class="mb-3">
             <label for="genre" class="form-label">Жанр</label>
             <select class="form-select" id="genre" name="genre.id" required>
                 <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"></option>
             </select>
+            <div th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}" class="text-danger"></div>
         </div>
+
         <div class="mb-3">
             <label for="publisher" class="form-label">Издатель</label>
             <select class="form-select" id="publisher" name="publisher.id" required>
                 <option th:each="publisher : ${publishers}" th:value="${publisher.id}" th:text="${publisher.name}"></option>
             </select>
+            <div th:if="${#fields.hasErrors('publisher')}" th:errors="*{publisher}" class="text-danger"></div>
         </div>
+
         <div class="mb-3">
             <label for="price" class="form-label">Цена</label>
-            <input type="number" class="form-control" id="price" name="price" required>
+            <input type="number" class="form-control" id="price" name="price" th:value="${book.price}" required>
+            <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="text-danger"></div>
         </div>
+
         <div class="mb-3">
             <label for="description" class="form-label">Описание</label>
-            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+            <textarea class="form-control" id="description" name="description" rows="3" th:value="${book.description}"></textarea>
+            <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger"></div>
         </div>
+
         <button type="submit" class="btn btn-success">Добавить</button>
         <a href="/books" class="btn btn-secondary">Назад</a>
     </form>

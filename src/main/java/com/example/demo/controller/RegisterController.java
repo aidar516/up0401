@@ -64,7 +64,7 @@ public class RegisterController {
         user.setUsername(registrationForm.getUsername());
         user.setEmail(registrationForm.getEmail());
         user.setActive(true);
-        user.setRoles(Collections.singleton(Roles.USER));
+        user.setRoles(Collections.singleton(Roles.ADMIN));
         user.setPassword(passwordEncoder.encode(registrationForm.getPassword()));
 
         userRepository.save(user);

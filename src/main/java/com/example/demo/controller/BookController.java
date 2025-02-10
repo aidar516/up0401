@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.models.Book;
+import com.example.demo.models.Order;
+import com.example.demo.models.OrderDetail;
 import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -68,16 +70,32 @@ public class BookController {
     }
 
     @PostMapping("/{id}")
-    public String updateBook(@PathVariable Long id, @ModelAttribute Book book) {
-        book.setId(id);
-        bookRepository.save(book);
+    public String updateBook(@PathVariable Long id, @ModelAttribute Book updatedBook) {
+        Book existingBook = bookRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Book not found"));
+
+        existingBook.setName(updatedBook.getName());
+        existingBook.setAuthor(updatedBook.getAuthor());
+        existingBook.setGenre(updatedBook.getGenre());
+        existingBook.setPublisher(updatedBook.getPublisher());
+        existingBook.setSupplier(updatedBook.getSupplier());
+        existingBook.setPrice(updatedBook.getPrice());
+        existingBook.setDescription(updatedBook.getDescription());
+
+        bookRepository.save(existingBook);
+
         return "redirect:/books";
     }
 
     @PostMapping("/delete/{id}")
     public String deleteBook(@PathVariable Long id) {
-        Book book = bookRepository.findById(id).orElseThrow();
+        Book book = bookRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Book not found"));
+
+        for (OrderDetail orderDetail : book.getOrderDetails()) {
+            orderDetail.setBook(null);
+        }
+
         bookRepository.delete(book);
+
         return "redirect:/books";
     }
 }

@@ -1,8 +1,8 @@
 package com.example.demo.models;
 
-
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "orderdetail")
@@ -13,12 +13,15 @@ public class OrderDetail {
 
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
+    @NotNull(message = "Заказ не может быть пустым")
     private Order order;
 
     @ManyToOne
     @JoinColumn(name = "book_id", nullable = false)
+    @NotNull(message = "Книга не может быть пустой")
     private Book book;
 
+    @Min(value = 1, message = "Количество должно быть больше или равно 1")
     private Integer quantity;
 
     public OrderDetail() {}

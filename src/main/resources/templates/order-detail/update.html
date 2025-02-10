@@ -8,7 +8,7 @@
 <body>
 <div class="container mt-5">
     <h1>Редактировать деталь заказа</h1>
-    <form th:action="@{'/order-details/update/' + ${orderDetail.id}}" method="post">
+    <form th:action="@{'/order-details/update/' + ${orderDetail.id}}" method="post" th:object="${orderDetail}">
         <div class="mb-3">
             <label for="order" class="form-label">Заказ</label>
             <select id="order" name="order.id" class="form-control" required>
@@ -17,16 +17,25 @@
                         th:selected="${order.id == orderDetail.order.id}">
                 </option>
             </select>
+            <div th:if="${#fields.hasErrors('order')}" class="text-danger">
+                <span th:errors="*{order}"></span>
+            </div>
         </div>
         <div class="mb-3">
             <label for="book" class="form-label">Книга</label>
             <select id="book" name="book.id" class="form-control" required>
                 <option th:each="book : ${books}" th:value="${book.id}" th:text="${book.name}" th:selected="${book.id == orderDetail.book.id}"></option>
             </select>
+            <div th:if="${#fields.hasErrors('book')}" class="text-danger">
+                <span th:errors="*{book}"></span>
+            </div>
         </div>
         <div class="mb-3">
             <label for="bookAmount" class="form-label">Количество</label>
-            <input type="number" id="bookAmount" name="quantity" class="form-control" th:value="${orderDetail.quantity}" required>
+            <input type="number" id="bookAmount" name="quantity" class="form-control" th:value="${orderDetail.quantity}" required min="0">
+            <div th:if="${#fields.hasErrors('quantity')}" class="text-danger">
+                <span th:errors="*{quantity}"></span>
+            </div>
         </div>
         <button type="submit" class="btn btn-success">Сохранить</button>
         <a href="/order-details" class="btn btn-secondary">Отмена</a>

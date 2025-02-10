@@ -60,15 +60,23 @@ public class OrderController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateOrder(@PathVariable Long id, @ModelAttribute Order order) {
+    public String updateOrder(@PathVariable Long id, @Valid @ModelAttribute Order order, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("users", userRepository.findAll());
+            model.addAttribute("books", bookRepository.findAll());
+            return "order/update"; // Название страницы для редактирования
+        }
+
         Order existingOrder = orderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Order not found"));
         existingOrder.setDate(order.getDate());
         existingOrder.setUser(order.getUser());
         existingOrder.setBooks(order.getBooks());
         existingOrder.setTotalPrice(order.getTotalPrice());
+
         orderRepository.save(existingOrder);
         return "redirect:/orders";
     }
+
 
     @Transactional
     @PostMapping("/delete/{id}")

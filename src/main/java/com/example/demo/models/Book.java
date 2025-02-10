@@ -2,6 +2,7 @@ package com.example.demo.models;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 
@@ -12,6 +13,7 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Название книги не может быть пустым")
     private String name;
 
     @ManyToOne
@@ -30,10 +32,10 @@ public class Book {
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
 
-
+    @Min(value = 0, message = "Цена не может быть отрицательной")
     private Integer price;
 
-    @NotBlank(message = "Поле не может быть пустым")
+    @NotBlank(message = "Описание не может быть пустым")
     private String description;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
